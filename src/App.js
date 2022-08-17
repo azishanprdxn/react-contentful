@@ -1,12 +1,22 @@
 import { useQuery, gql } from '@apollo/client';
 
 const GET_LOCATIONS = gql`
-  query GetLocations {
-    locations {
-      id
-      name
-      description
-      photo
+  query NavBar {
+    reactContentfulDemoCollection {
+      total
+      items {
+        title
+        logo {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
+      }
     }
   }
 `;
@@ -15,25 +25,24 @@ function DisplayLocations() {
   const { loading, error, data } = useQuery(GET_LOCATIONS);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (error) return <p>Error!</p>;
 
-  return data.locations.map(({ id, name, description, photo }) => (
-    <div key={id}>
-      <h3>{name}</h3>
-      <img width='400' height='250' alt='location-reference' src={`${photo}`} />
-      <br />
-      <b>About this location:</b>
-      <p>{description}</p>
-      <br />
+  const { title, logo } = data.reactContentfulDemoCollection.items[0];
+  console.log(title);
+
+  return (
+    <div>
+      <h1>Hi {title}</h1>
+      <figure>
+        <img src={logo.url} alt='logo' />
+      </figure>
     </div>
-  ));
+  );
 }
 
 function App() {
   return (
     <div>
-      <h2>My first Contentful app 🚀</h2>
-      <br />
       <DisplayLocations />
     </div>
   );
