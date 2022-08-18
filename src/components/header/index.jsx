@@ -56,11 +56,7 @@ const DisplayHeaderData = () => {
 };
 
 const HeaderComponent = () => {
-  return (
-    <>
-      <DisplayHeaderData />
-    </>
-  );
+  return <DisplayHeaderData />;
 };
 
 export default HeaderComponent;
