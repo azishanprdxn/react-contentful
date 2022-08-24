@@ -5,11 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
+const { REACT_APP_CONTENTFUL_SPACE, REACT_APP_CONTENTFUL_TOKEN } = process.env;
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: 'https://graphql.contentful.com/content/v1/spaces/6yxsjb4xctlq',
+  uri: `https://graphql.contentful.com/content/v1/spaces/${REACT_APP_CONTENTFUL_SPACE}`,
   headers: {
-    Authorization: `Bearer ${'vr7ihrVRXUuLrOb8zMvdvGhXbEOd7a8Tp1p3nYn8c24'}`,
+    Authorization: `Bearer ${REACT_APP_CONTENTFUL_TOKEN}`,
   },
 });
 

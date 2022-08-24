@@ -1,10 +1,10 @@
-import React from 'react';
-import { useQuery, gql } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+// import { useQuery, gql } from '@apollo/client';
 
 import { Header, Nav } from './Header.styled';
 
-const GET_NAVBAR_DATA = gql`
-  query NavBar {
+const query = `
+  {
     navbarCollection {
       items {
         navbarTitle
@@ -17,16 +17,49 @@ const GET_NAVBAR_DATA = gql`
   }
 `;
 
+const { REACT_APP_CONTENTFUL_SPACE, REACT_APP_CONTENTFUL_TOKEN } = process.env;
+
 const DisplayHeaderData = () => {
-  const { loading, error, data } = useQuery(GET_NAVBAR_DATA);
+  const [page, setPage] = useState(null);
+  // const { loading, error, data } = useQuery(GET_NAVBAR_DATA);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error!</p>;
+  useEffect(() => {
+    window
+      .fetch(
+        `https://graphql.contentful.com/content/v1/spaces/${REACT_APP_CONTENTFUL_SPACE}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // Authenticate the request
+            Authorization: `Bearer ${REACT_APP_CONTENTFUL_TOKEN}`,
+          },
+          // send the GraphQL query
+          body: JSON.stringify({ query }),
+        }
+      )
+      .then((response) => response.json())
+      .then(({ data, errors }) => {
+        if (errors) {
+          console.error(errors);
+        }
 
-  const { navbarTitle, navigationLinks } = data?.navbarCollection.items[0];
+        // rerender the entire component with new data
+        setPage(data.navbarCollection.items[0]);
+      });
+  }, []);
+
+  console.log(page);
+
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error!</p>;
+
+  if (!page) return <p>Loading...</p>;
+
+  const { navbarTitle, navigationLinks } = page;
 
   return (
-    data && (
+    page && (
       <Header>
         <div className='wrapper'>
           <div className='header__container'>
