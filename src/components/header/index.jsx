@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Header, Nav } from './Header.styled';
 
-const query = `
-  {
+const NAVBAR_QUERY = `
+  query navBar {
     navbarCollection {
       items {
         navbarTitle
@@ -35,7 +35,7 @@ const DisplayHeaderData = () => {
             Authorization: `Bearer ${REACT_APP_CONTENTFUL_TOKEN}`,
           },
           // send the GraphQL query
-          body: JSON.stringify({ query }),
+          body: JSON.stringify({ query: NAVBAR_QUERY }),
         }
       )
       .then((response) => response.json())
@@ -48,8 +48,6 @@ const DisplayHeaderData = () => {
         setPage(data.navbarCollection.items[0]);
       });
   }, []);
-
-  console.log(page);
 
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error!</p>;
