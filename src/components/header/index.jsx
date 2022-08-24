@@ -10,13 +10,28 @@ query navBar {
       title
       logo {
         title
+        description
+        contentType
+        fileName
+        size
         url
+        width
+        height
       }
-      navsCollection(limit: 10) {
+      navsCollection(limit: 5) {
+        total
         items {
           ... on Navigations {
             title
             pageUrl
+            subLinksCollection(limit: 5) {
+              items {
+                ... on Navigations {
+                  title
+                  pageUrl
+                }
+              }
+            }
           }
         }
       }
