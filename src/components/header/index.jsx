@@ -4,17 +4,25 @@ import React, { useEffect, useState } from 'react';
 import { Header, Nav } from './Header.styled';
 
 const NAVBAR_QUERY = `
-  query navBar {
-    navbarCollection {
-      items {
-        navbarTitle
-        siteLogo {
-          url
+query navBar {
+  headerCollection {
+    items {
+      title
+      logo {
+        title
+        url
+      }
+      navsCollection(limit: 10) {
+        items {
+          ... on Navigations {
+            title
+            pageUrl
+          }
         }
-        navigationLinks
       }
     }
   }
+}
 `;
 
 const { REACT_APP_CONTENTFUL_SPACE, REACT_APP_CONTENTFUL_TOKEN } = process.env;
@@ -45,7 +53,7 @@ const DisplayHeaderData = () => {
         }
 
         // rerender the entire component with new data
-        setPage(data.navbarCollection.items[0]);
+        setPage(data.headerCollection.items[0]);
       });
   }, []);
 
@@ -54,7 +62,9 @@ const DisplayHeaderData = () => {
 
   if (!page) return <p>Loading...</p>;
 
-  const { navbarTitle, navigationLinks } = page;
+  console.log(page);
+
+  const { title, navsCollection } = page;
 
   return (
     page && (
@@ -62,17 +72,17 @@ const DisplayHeaderData = () => {
         <div className='wrapper'>
           <div className='header__container'>
             <h1>
-              <a href='#FIXME' title={navbarTitle}>
-                {navbarTitle}
+              <a href='#FIXME' title={title}>
+                {title}
               </a>
             </h1>
-            {Array.isArray(navigationLinks) && (
+            {Array.isArray(navsCollection.items) && (
               <Nav>
                 <ul>
-                  {navigationLinks.map((navLink, index) => (
-                    <li key={index}>
-                      <a href='#FIXME' title={navLink}>
-                        {navLink}
+                  {navsCollection.items.map((navLink) => (
+                    <li key={navLink.pageUrl}>
+                      <a href={navLink.pageUrl} title={navLink.title}>
+                        {navLink.title}
                       </a>
                     </li>
                   ))}
