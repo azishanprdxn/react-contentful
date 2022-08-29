@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import FetchUtils from '../../utils/fetch-util';
 // import { useQuery, gql } from '@apollo/client';
 
 import { Header, Nav } from './Header.styled';
@@ -40,36 +41,26 @@ query navBar {
 }
 `;
 
-const { REACT_APP_CONTENTFUL_SPACE, REACT_APP_CONTENTFUL_TOKEN } = process.env;
-
 const DisplayHeaderData = () => {
   const [page, setPage] = useState(null);
   // const { loading, error, data } = useQuery(GET_NAVBAR_DATA);
 
-  useEffect(() => {
-    window
-      .fetch(
-        `https://graphql.contentful.com/content/v1/spaces/${REACT_APP_CONTENTFUL_SPACE}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            // Authenticate the request
-            Authorization: `Bearer ${REACT_APP_CONTENTFUL_TOKEN}`,
-          },
-          // send the GraphQL query
-          body: JSON.stringify({ query: NAVBAR_QUERY }),
-        }
-      )
-      .then((response) => response.json())
-      .then(({ data, errors }) => {
-        if (errors) {
-          console.error(errors);
-        }
-
-        // rerender the entire component with new data
+  const fetchData = async () => {
+    try {
+      const response = await FetchUtils.postData(
+        JSON.stringify({ query: NAVBAR_QUERY })
+      );
+      if (response.status === 200) {
+        const { data } = response.data;
         setPage(data.headerCollection.items[0]);
-      });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   // if (loading) return <p>Loading...</p>;
