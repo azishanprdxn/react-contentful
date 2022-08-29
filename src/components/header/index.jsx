@@ -70,7 +70,7 @@ const DisplayHeaderData = () => {
 
   console.log(page);
 
-  const { title, navsCollection } = page;
+  const { title, navsCollection, logo } = page;
 
   return (
     page && (
@@ -79,7 +79,7 @@ const DisplayHeaderData = () => {
           <div className='header__container'>
             <h1>
               <a href='#FIXME' title={title}>
-                {title}
+                <img src={logo.url} alt='logo' />
               </a>
             </h1>
             {Array.isArray(navsCollection.items) && (

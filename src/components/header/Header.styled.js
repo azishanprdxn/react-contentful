@@ -15,6 +15,14 @@ const Header = styled.header`
       justify-content: space-between;
       align-items: center;
       height: 60px;
+
+      & > h1 {
+        a {
+          img {
+            height: 50px;
+          }
+        }
+      }
     }
   }
 `;
