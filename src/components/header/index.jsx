@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink as Link } from 'react-router-dom';
 import FetchUtils from '../../utils/fetch-util';
 // import { useQuery, gql } from '@apollo/client';
 
@@ -68,8 +69,6 @@ const DisplayHeaderData = () => {
 
   if (!page) return <p>Loading...</p>;
 
-  console.log(page);
-
   const { title, navsCollection, logo } = page;
 
   return (
@@ -87,9 +86,19 @@ const DisplayHeaderData = () => {
                 <ul>
                   {navsCollection.items.map((navLink) => (
                     <li key={navLink.pageUrl}>
-                      <a href={navLink.pageUrl} title={navLink.title}>
+                      <Link
+                        to={navLink.pageUrl}
+                        title={navLink.title}
+                        style={({ isActive }) =>
+                          isActive
+                            ? {
+                                textDecoration: 'underline',
+                              }
+                            : undefined
+                        }
+                      >
                         {navLink.title}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
