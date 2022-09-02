@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 import { useSinglePost } from '../../custom-hooks/useSinglePost';
+import { PostContainer } from './SinglePost.styled';
 
 export default function SinglePost() {
   const { id } = useParams();
@@ -10,12 +11,16 @@ export default function SinglePost() {
 
   const RenderPost = () => {
     if (isLoading) return <p>Loading...</p>;
+    const date = new Date(post.date);
+    const renderedDate = () => {
+      return `${date.getDate()} ${date.getMonth()}, ${date.getFullYear()}`;
+    };
 
     return (
       <>
         <div className='post__intro'>
           <h2 className='post__intro__title'>{post.title}</h2>
-          <small className='post__intro__date'>{post.date}</small>
+          <small className='post__intro__date'>{renderedDate()}</small>
           <p className='post__intro__desc'>{post.description}</p>
 
           <img
@@ -31,12 +36,12 @@ export default function SinglePost() {
   };
 
   return (
-    <div className='post'>
+    <PostContainer className='post'>
       <Link className='post__back' to='/blogs'>
-        {'< Back'}
+        {'< Go back to blogs'}
       </Link>
 
       <RenderPost />
-    </div>
+    </PostContainer>
   );
 }
