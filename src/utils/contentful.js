@@ -5,19 +5,33 @@ const client = require('contentful').createClient({
   accessToken: REACT_APP_CONTENTFUL_TOKEN,
 });
 
-const getBlogPosts = () =>
-  client
-    .getEntries({
+const getBlogPosts = async () => {
+  try {
+    const response = await client.getEntries({
       content_type: 'blogPost',
-    })
-    .then((response) => response.items);
+    });
+    if (response) {
+      return response.items;
+    }
+    console.log(response);
+  } catch (e) {
+    console.log('Error:', e);
+  }
+};
 
-const getSinglePost = (slug) =>
-  client
-    .getEntries({
+const getSinglePost = async (slug) => {
+  try {
+    const response = await client.getEntries({
       'fields.slug': slug,
       content_type: 'blogPost',
-    })
-    .then((response) => response.items);
+    });
+    if (response) {
+      return response.items;
+    }
+    console.log(response);
+  } catch (e) {
+    console.log('Error:', e);
+  }
+};
 
 export { getBlogPosts, getSinglePost };

@@ -6,13 +6,10 @@ import { useSinglePost } from '../../custom-hooks/useSinglePost';
 
 export default function SinglePost() {
   const { id } = useParams();
-  console.log(id);
   const [post, isLoading] = useSinglePost(id);
 
   const RenderPost = () => {
     if (isLoading) return <p>Loading...</p>;
-
-    console.log(post);
 
     return (
       <>
