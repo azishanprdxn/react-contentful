@@ -77,9 +77,9 @@ const DisplayHeaderData = () => {
         <div className='wrapper'>
           <div className='header__container'>
             <h1>
-              <a href='#FIXME' title={title}>
+              <Link to='/' title={title}>
                 <img src={logo.url} alt='logo' />
-              </a>
+              </Link>
             </h1>
             {Array.isArray(navsCollection.items) && (
               <Nav>
