@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useQuery, gql } from '@apollo/client';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 import { useSinglePost } from '../../custom-hooks/useSinglePost';
@@ -8,6 +9,31 @@ import { PostContainer } from './SinglePost.styled';
 export default function SinglePost() {
   const { id } = useParams();
   const [post, isLoading] = useSinglePost(id);
+
+  const SINGLE_POST_QUERY = gql`
+    query getPost($slug: String!) {
+      blogPostCollection(where: { slug: $slug }) {
+        items {
+          title
+          slug
+          description
+          featuredImage {
+            url
+          }
+          date
+          body {
+            json
+          }
+        }
+      }
+    }
+  `;
+
+  const { loading, error, data } = useQuery(SINGLE_POST_QUERY, {
+    variables: { slug: id },
+  });
+
+  console.log(loading, error, data);
 
   const RenderPost = () => {
     if (isLoading) return <p>Loading...</p>;

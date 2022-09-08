@@ -1,9 +1,33 @@
 import React from 'react';
+import { useQuery, gql } from '@apollo/client';
 import { usePosts } from '../../custom-hooks/usePosts';
 import { PostsContainer, Post } from './Posts.styled';
 
+const POSTS_QUERY = gql`
+  query getPosts {
+    blogPostCollection {
+      items {
+        title
+        slug
+        description
+        featuredImage {
+          url
+        }
+        date
+        body {
+          json
+        }
+      }
+    }
+  }
+`;
+
 export default function Posts() {
   const [posts, isLoading] = usePosts();
+
+  const { loading, error, data } = useQuery(POSTS_QUERY);
+
+  console.log(loading, error, data);
 
   const renderPosts = () => {
     if (isLoading) return <p>Loading...</p>;
