@@ -22,6 +22,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 1. Navigation (Header fetched from contentful)
 2. Blogs (Single/Multiple) fetched from contenful from content type blogs
 3. App includes 3 ways to fetch content from contenful. (via axios fetch, graphql, vanilla javascript)
+4. Keys are already present in .env file as those are not senstive and dummy texts are used
 
 ### Working example (Demo)
 
